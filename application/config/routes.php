@@ -49,6 +49,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['news'] = 'news';
+$route['news/create'] = 'news/create';
+$route['news/edit'] = 'news/edit';
+$route['news/delete'] = 'news/delete';
+$route['news/(:any)'] = 'news/view/$1';
+
+$route['posts'] = 'posts';
+$route['posts/create'] = 'posts/create';
+$route['posts/edit'] = 'posts/edit';
+$route['posts/delete'] = 'posts/delete';
+$route['posts/(:any)'] = 'posts/view/$1';
+
+$route['movies'] = 'movies';
+$route['movies/comment'] = 'movies/comment';
+$route['movies/create'] = 'movies/create';
+$route['movies/edit'] = 'movies/edit';
+$route['movies/delete'] = 'movies/delete';
+$route['movies/(:any)'] = 'movies/view/$1';
+$route['movies/type/films'] = 'movies/type/films/$1';
+$route['movies/type/serials'] = 'movies/type/serials/$1';
+
+$route['rating'] = 'main/rating';
+$route['rating/(:any)'] = 'main/rating/$1';
+
+$route['contact'] = 'main/contact';
+
+$route['search'] = 'search';
+$route['search/(:any)'] = 'search/$1';
