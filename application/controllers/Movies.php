@@ -123,6 +123,63 @@ class Movies extends MY_Controller{
 			$director = $this->input->post('director');
 			$add_date = $this->input->post('add_date');
 			$category_id = $this->input->post('category_id');
+
+			if($this->Films_model->updateMovies($id, $slug, $name, $descriptions, $year, $rating, $poster, $player_code, $director, $add_date, $category_id)){
+				$this->data['title'] = 'Успешно обновлено';
+				$this->load->view->('templates/header', $this->data);
+				$this->load->view('movies/edited');
+				$this->load->view('templates/footer');
+			}
+		}else{
+			$this->load->view('templates/header', $this->data);
+			$this->load->view('movies/edit');
+			$this->load->view('templates/footer');
+		}
+	}
+	public function delete($slug = Null){
+
+		if(!$this->dx_auth->is_admin()){
+			show_404();
+		}
+
+		$this->data['movies_delete'] = $this->Films_model->getMovies($slug);
+
+		if(empty($this->data['movies_delete'])){
+			show_404();
+		}
+
+		$this->data['title'] = "Удалить фильм/серифл";
+		$this->data['result'] = "Ошибка удаления ".$this->data['movies_delete']['name'];
+
+		if($this->Films_model->deleteMovies($slug)){
+			$this->data['result'] = $this->data['movies_delete']['name']. "успешно удален";
+		}
+
+		$this->load->view('templates/header', $this->data);
+		$this->load->view('movies/delete' $this->data);
+		$this->load->view('templates/footer');
+	}
+
+	public function comment() {
+		if(!$this->dx->is_logged_in()){
+			show_404();
+		}
+
+		$this->data['title'] = "Добавить комментарий";
+
+		if($this->input->post('user_id') && $this->input->post('movie_id') && $this->input->post('comment_text')){
+
+			$user_id = $this->input->post('user_id');
+			$movie_id = $this->input->post('movie_id');
+			$comment_text = $this->input->post('comment_text');
+
+			if($this->Films_model->setComments($user_id, $movie_id, $comment_text)){
+
+				$this->data['title'] = 'комментарий добавлен!';
+				$this->load->view('movies/commentCreated');
+			}
+		} else{
+			$this->load->view('movies/commentError', $this->data);
 		}
 	}
 }
